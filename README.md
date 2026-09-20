@@ -7,6 +7,8 @@
     ·
     <a href="https://ismailco.github.io/linkedin-page-posts-cleaner/privacy.html">Privacy policy</a>
     ·
+    <a href="https://github.com/Ismailco/linkedin-page-posts-cleaner/releases/latest">Download latest release</a>
+    ·
     <a href="https://github.com/Ismailco/linkedin-page-posts-cleaner/issues">Report an issue</a>
   </p>
   <p>
@@ -117,6 +119,8 @@ The current package is [`release/linkedin-page-posts-cleaner.zip`](release/linke
 ## Contributing
 
 Bug reports, focused improvements, and clear reproduction steps are welcome. See [`CONTRIBUTING.md`](CONTRIBUTING.md) before opening an issue or pull request.
+
+If this project is useful to you, a star helps other Chrome extension builders find it.
 
 <div align="center">
   <sub>Built for focused, visible, local-first cleanup.</sub>
