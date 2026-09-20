@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0b1f33" />
+    <meta name="description" content="Privacy policy for LinkedIn Page Posts Cleaner." />
+    <title>Privacy Policy · Page Posts Cleaner</title>
+    <link rel="icon" href="./assets/icon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="./styles.css" />
+    <script src="./script.js" defer></script>
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="site-header">
+        <a class="brand" href="./" aria-label="LinkedIn Page Posts Cleaner home"><img src="./assets/icon.svg" alt="" width="36" height="36" /><span>Page Posts Cleaner</span></a>
+        <nav class="site-nav" aria-label="Main navigation"><a href="./">Home</a><a href="./privacy.html" aria-current="page">Privacy</a></nav>
+      </header>
+
+      <main class="legal-layout" data-reveal>
+        <p class="eyebrow">Privacy</p>
+        <h1>Privacy policy</h1>
+        <p class="legal-lede">Page Posts Cleaner is designed to run locally in your browser. It does not operate a remote service or send extension data to a developer-controlled server.</p>
+        <p class="updated">Last updated: <time datetime="2026-09-20">September 20, 2026</time></p>
+
+        <div class="legal-content">
+          <section><h2>What the extension does</h2><p>Page Posts Cleaner helps company page administrators remove published posts from the supported LinkedIn company admin Page Posts view. It uses the page’s existing controls and only starts when the user starts a session from the extension popup.</p></section>
+          <section><h2>Information stored locally</h2><p>The extension stores configuration values such as delay limits, the session limit, and the current session status in <code>chrome.storage.local</code>. This allows the popup to show progress while a session is running. This information stays in the user’s Chrome profile and is not transmitted to us.</p></section>
+          <section><h2>Information we collect</h2><p>We do not collect, sell, or share personally identifiable information, health information, financial information, authentication information, communications, location, web history, user activity, or website content. Page content may be read and interacted with locally while the user-requested cleanup session runs, but it is not sent to a server.</p></section>
+          <section><h2>Permissions</h2><ul><li><strong>activeTab:</strong> access the active LinkedIn admin tab when the user starts a session.</li><li><strong>scripting:</strong> run the packaged content script on the supported page.</li><li><strong>storage:</strong> save local settings and session state.</li><li><strong>LinkedIn host access:</strong> limit page operation to LinkedIn, with the content script matched only to the company published-posts admin path.</li></ul></section>
+          <section><h2>Third parties and remote code</h2><p>The extension does not use analytics, advertising, external APIs, remote code, or third-party servers. All JavaScript shipped with the extension is included in its package.</p></section>
+          <section><h2>Changes and contact</h2><p>Material changes to this policy will be reflected on this page. For questions about the extension, please use the project’s GitHub repository issue tracker.</p></section>
+          <p class="legal-note">Page Posts Cleaner is an independent extension and is not affiliated with, endorsed by, or sponsored by LinkedIn Corporation.</p>
+        </div>
+      </main>
+
+      <footer class="site-footer"><span>© <span data-year>2026</span> Page Posts Cleaner</span><span><a href="./">Home</a><span aria-hidden="true"> · </span><a href="https://github.com/" rel="noreferrer">Source on GitHub</a></span></footer>
+    </div>
+  </body>
+</html>
