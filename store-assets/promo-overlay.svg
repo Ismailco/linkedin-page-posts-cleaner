@@ -1,0 +1,24 @@
+<svg width="1400" height="560" viewBox="0 0 1400 560" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect x="545" y="112" width="118" height="28" rx="14" fill="#E8F0FF"/>
+  <circle cx="561" cy="126" r="5" fill="#2563EB"/>
+  <text x="576" y="131" fill="#1D4ED8" font-family="Arial, sans-serif" font-size="12" font-weight="700" letter-spacing="1.2">LINKEDIN WORKFLOW</text>
+  <text x="545" y="222" fill="#0B1F33" font-family="Arial, sans-serif" font-size="54" font-weight="700" letter-spacing="-2.6">Clean up your</text>
+  <text x="545" y="282" fill="#2563EB" font-family="Arial, sans-serif" font-size="54" font-weight="700" letter-spacing="-2.6">published posts.</text>
+  <text x="548" y="326" fill="#5F7186" font-family="Arial, sans-serif" font-size="20">Clear controls. Measured pacing. Live progress.</text>
+  <rect x="548" y="372" width="222" height="54" rx="16" fill="#0B1F33"/>
+  <rect x="563" y="387" width="24" height="24" rx="7" fill="#F7FAFF"/>
+  <path d="M568 395h14M568 400h9" stroke="#9AB0C6" stroke-width="1.8" stroke-linecap="round"/>
+  <path d="m568 407 10-10" stroke="#4F8CFF" stroke-width="3" stroke-linecap="round"/>
+  <path d="m578 397 3-3" stroke="#F97362" stroke-width="3" stroke-linecap="round"/>
+  <text x="598" y="405" fill="#FFFFFF" font-family="Arial, sans-serif" font-size="17" font-weight="700">Page Posts Cleaner</text>
+  <rect x="1032" y="96" width="232" height="338" rx="24" fill="#FFFFFF" fill-opacity=".82" stroke="#D4E0EF" stroke-width="2"/>
+  <rect x="1052" y="116" width="192" height="78" rx="16" fill="#0B1F33"/>
+  <text x="1068" y="146" fill="#B9CBE0" font-family="Arial, sans-serif" font-size="9" font-weight="700" letter-spacing="1">SESSION MONITOR</text>
+  <text x="1068" y="172" fill="#FFFFFF" font-family="Arial, sans-serif" font-size="19" font-weight="700">Running</text>
+  <rect x="1068" y="184" width="158" height="5" rx="2.5" fill="#344F6E"/>
+  <rect x="1068" y="184" width="101" height="5" rx="2.5" fill="#4F8CFF"/>
+  <rect x="1052" y="210" width="192" height="82" rx="16" fill="#F7FAFF" stroke="#DBE4EF"/>
+  <text x="1068" y="236" fill="#5F7186" font-family="Arial, sans-serif" font-size="10">DELETION GUARDRAILS</text>
+  <text x="1068" y="261" fill="#0B1F33" font-family="Arial, sans-serif" font-size="14" font-weight="700">2–6 second delay</text>
+  <text x="1068" y="280" fill="#5F7186" font-family="Arial, sans-serif" font-size="11">50 post session limit</text>
+</svg>
