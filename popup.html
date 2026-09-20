@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LinkedIn Page Posts Cleaner</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --canvas: #f4f7fb;
+        --surface: rgba(255, 255, 255, 0.92);
+        --surface-strong: #ffffff;
+        --line: #dbe4ef;
+        --line-strong: #c9d6e5;
+        --ink: #0b1f33;
+        --muted: #5f7186;
+        --blue: #2563eb;
+        --blue-dark: #1d4ed8;
+        --blue-soft: #e8f0ff;
+        --green: #16805b;
+        --green-soft: #e7f7f0;
+        --amber: #9a5b00;
+        --amber-soft: #fff5dd;
+        --red: #b42318;
+        --red-soft: #fff0ee;
+        --shadow: 0 18px 42px rgba(21, 49, 80, 0.1);
+      }
+
+      * { box-sizing: border-box; }
+
+      body {
+        width: 368px;
+        min-height: 620px;
+        margin: 0;
+        padding: 16px;
+        background:
+          radial-gradient(circle at 100% 0%, rgba(37, 99, 235, 0.12), transparent 36%),
+          linear-gradient(180deg, #f8fbff 0%, var(--canvas) 100%);
+        color: var(--ink);
+        font: 13px/1.45 "Inter", "Segoe UI", sans-serif;
+      }
+
+      button, input { font: inherit; }
+      button { border: 0; }
+
+      .app-shell { display: grid; gap: 12px; }
+
+      .hero {
+        position: relative;
+        overflow: hidden;
+        padding: 18px;
+        border: 1px solid rgba(11, 31, 51, 0.16);
+        border-radius: 20px;
+        background: linear-gradient(135deg, #0b1f33 0%, #173f6d 72%, #2563eb 100%);
+        color: #fff;
+        box-shadow: var(--shadow);
+      }
+
+      .hero::after {
+        position: absolute;
+        top: -52px;
+        right: -48px;
+        width: 160px;
+        height: 160px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 42px;
+        transform: rotate(26deg);
+        content: "";
+      }
+
+      .brand-row, .section-heading, .status-header, .progress-meta, .log-heading {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      .brand-row { justify-content: flex-start; margin-bottom: 14px; }
+
+      .brand-mark {
+        display: grid;
+        width: 34px;
+        height: 34px;
+        place-items: center;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 11px;
+        background: rgba(255, 255, 255, 0.13);
+      }
+
+      .brand-mark svg { width: 21px; height: 21px; }
+
+      .eyebrow {
+        color: var(--muted);
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      .hero .eyebrow { color: #bcd2f0; }
+      h1, h2, p { margin: 0; }
+
+      h1 {
+        max-width: 240px;
+        font-size: 24px;
+        line-height: 1.05;
+        letter-spacing: -0.04em;
+      }
+
+      h2 {
+        font-size: 15px;
+        line-height: 1.15;
+        letter-spacing: -0.02em;
+      }
+
+      .hero-copy { max-width: 280px; margin-top: 8px; color: #d9e6f7; }
+
+      .surface {
+        display: grid;
+        gap: 14px;
+        padding: 16px;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        background: var(--surface);
+        box-shadow: 0 8px 24px rgba(21, 49, 80, 0.05);
+      }
+
+      .target-card {
+        grid-template-columns: auto minmax(0, 1fr);
+        align-items: center;
+        gap: 10px;
+        padding: 12px 14px;
+      }
+
+      .target-icon {
+        display: grid;
+        width: 30px;
+        height: 30px;
+        place-items: center;
+        border-radius: 10px;
+        background: var(--blue-soft);
+        color: var(--blue);
+      }
+
+      .target-icon svg { width: 16px; height: 16px; }
+      .target-copy { min-width: 0; }
+      .target-label { color: var(--muted); font-size: 11px; font-weight: 700; }
+
+      #pageStatus { margin-top: 2px; color: var(--ink); font-size: 12px; }
+      #pageStatus[data-state="ready"] { color: var(--green); }
+      #pageStatus[data-state="invalid"] { color: var(--amber); }
+
+      .status-dot {
+        width: 7px;
+        height: 7px;
+        margin-left: auto;
+        border-radius: 999px;
+        background: var(--amber);
+        box-shadow: 0 0 0 4px var(--amber-soft);
+      }
+
+      .status-dot[data-state="ready"] { background: var(--green); box-shadow: 0 0 0 4px var(--green-soft); }
+
+      .warning {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 9px;
+        padding: 10px 11px;
+        border: 1px solid #f0dca8;
+        border-radius: 12px;
+        background: var(--amber-soft);
+        color: #704500;
+        font-size: 12px;
+      }
+
+      .warning svg { width: 15px; height: 15px; margin-top: 1px; }
+      .field-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+      .field { display: grid; gap: 6px; }
+      .field.full-width { grid-column: 1 / -1; }
+      label { color: var(--muted); font-size: 11px; font-weight: 800; }
+
+      input {
+        width: 100%;
+        border: 1px solid var(--line-strong);
+        border-radius: 10px;
+        padding: 10px 11px;
+        outline: 0;
+        background: var(--surface-strong);
+        color: var(--ink);
+        transition: border-color 140ms ease, box-shadow 140ms ease;
+      }
+
+      input:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.14); }
+      .field-hint { color: var(--muted); font-size: 10px; }
+
+      .limit-badge {
+        flex: 0 0 auto;
+        padding: 5px 8px;
+        border-radius: 999px;
+        background: var(--blue-soft);
+        color: var(--blue-dark);
+        font-size: 10px;
+        font-weight: 800;
+      }
+
+      .actions { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr); gap: 10px; }
+
+      button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        min-height: 42px;
+        border-radius: 11px;
+        padding: 10px 14px;
+        font-weight: 800;
+        cursor: pointer;
+        transition: transform 140ms ease, background 140ms ease, box-shadow 140ms ease, opacity 140ms ease;
+      }
+
+      button svg { width: 15px; height: 15px; }
+      button:hover:not(:disabled) { transform: translateY(-1px); }
+      button:focus-visible { outline: 3px solid rgba(37, 99, 235, 0.26); outline-offset: 2px; }
+      button:disabled { cursor: not-allowed; opacity: 0.46; }
+
+      .primary { background: var(--blue); color: #fff; box-shadow: 0 7px 14px rgba(37, 99, 235, 0.22); }
+      .primary:hover:not(:disabled) { background: var(--blue-dark); box-shadow: 0 9px 18px rgba(37, 99, 235, 0.28); }
+      .secondary { background: #edf2f7; color: var(--ink); }
+      .secondary:hover:not(:disabled) { background: #e2eaf3; }
+
+      .status-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 5px 9px;
+        border-radius: 999px;
+        background: #edf2f7;
+        color: var(--muted);
+        font-size: 11px;
+        font-weight: 800;
+      }
+
+      .status-pill::before { width: 6px; height: 6px; border-radius: 999px; background: currentColor; content: ""; }
+      .status-pill[data-state="running"] { background: var(--green-soft); color: var(--green); }
+      .status-pill[data-state="error"] { background: var(--red-soft); color: var(--red); }
+      .status-pill[data-state="warn"] { background: var(--amber-soft); color: var(--amber); }
+
+      .progress-track { height: 7px; overflow: hidden; border-radius: 999px; background: #e7edf4; }
+      .progress-bar { display: block; width: 0; height: 100%; border-radius: inherit; background: linear-gradient(90deg, #2563eb, #4f8cff); transition: width 180ms ease; }
+      .progress-meta { color: var(--muted); font-size: 11px; }
+      .stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+
+      .stat { padding: 10px; border: 1px solid var(--line); border-radius: 11px; background: #fbfdff; }
+      .stat strong { display: block; font-size: 19px; letter-spacing: -0.04em; }
+      .stat span { color: var(--muted); font-size: 10px; font-weight: 700; }
+
+      .error-note { padding: 9px 10px; border: 1px solid #f4c6c1; border-radius: 10px; background: var(--red-soft); color: var(--red); font-size: 11px; }
+      .log-heading { color: var(--ink); }
+      .log-count { color: var(--muted); font-size: 10px; font-weight: 700; }
+
+      .log {
+        display: grid;
+        gap: 7px;
+        max-height: 146px;
+        margin: 0;
+        padding: 0;
+        overflow: auto;
+        list-style: none;
+      }
+
+      .log-item { padding: 8px 9px; border-left: 2px solid #cbd8e8; border-radius: 0 8px 8px 0; background: #f7faff; }
+      .log-item small { display: block; margin-bottom: 2px; color: var(--muted); font-size: 10px; }
+      .log-item div { color: #29435e; font-size: 11px; }
+      [hidden] { display: none !important; }
+    </style>
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="hero">
+        <div class="brand-row">
+          <span class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="4" y="4.5" width="14" height="15" rx="4" fill="#F7FAFF"/>
+              <circle cx="7.5" cy="8.2" r="1" fill="#8AA3BF"/>
+              <path d="M10 7.3h4.7M6.5 11.5h8M6.5 14.3h5.5" stroke="#9AB0C6" stroke-width="1.25" stroke-linecap="round"/>
+              <path d="m7 18 7.8-7.8" stroke="#4F8CFF" stroke-width="2.3" stroke-linecap="round"/>
+              <path d="m14.8 10.2 1.6-1.6" stroke="#F97362" stroke-width="2.3" stroke-linecap="round"/>
+            </svg>
+          </span>
+          <div class="eyebrow">LinkedIn workflow</div>
+        </div>
+        <h1>Page Posts Cleaner</h1>
+        <p class="hero-copy">A focused control panel for removing published company posts at your pace.</p>
+      </header>
+
+      <section class="surface target-card" aria-live="polite">
+        <span class="target-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M4 5.5A1.5 1.5 0 0 1 5.5 4h13A1.5 1.5 0 0 1 20 5.5v9a1.5 1.5 0 0 1-1.5 1.5H14l-2 3-2-3H5.5A1.5 1.5 0 0 1 4 14.5v-9Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
+            <path d="M7.5 8h9M7.5 11h6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+          </svg>
+        </span>
+        <div class="target-copy">
+          <div class="target-label">Current tab</div>
+          <div id="pageStatus">Checking current tab...</div>
+        </div>
+        <span id="pageStatusDot" class="status-dot" aria-hidden="true"></span>
+      </section>
+
+      <section class="surface">
+        <div class="section-heading">
+          <div>
+            <div class="eyebrow">Run settings</div>
+            <h2>Deletion guardrails</h2>
+          </div>
+          <span class="limit-badge">Safety-first</span>
+        </div>
+
+        <div class="warning">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M12 3.8 21 19.5a1 1 0 0 1-.87 1.5H3.87A1 1 0 0 1 3 19.5L12 3.8Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
+            <path d="M12 9v4.5M12 17.2v.1" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+          </svg>
+          <span>Deletion is irreversible. Review the target page before starting.</span>
+        </div>
+
+        <div class="field-grid">
+          <div class="field">
+            <label for="delayMin">Minimum delay</label>
+            <input id="delayMin" type="number" min="2" max="6" step="1" value="2" />
+            <span class="field-hint">seconds</span>
+          </div>
+
+          <div class="field">
+            <label for="delayMax">Maximum delay</label>
+            <input id="delayMax" type="number" min="2" max="6" step="1" value="6" />
+            <span class="field-hint">seconds</span>
+          </div>
+
+          <div class="field full-width">
+            <label for="maxActions">Session limit</label>
+            <input id="maxActions" type="number" min="1" max="50" step="1" value="50" />
+            <span class="field-hint">Maximum posts the cleaner can attempt in this session</span>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button id="startButton" class="primary" type="button">
+            <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M8 5.7v12.6a1 1 0 0 0 1.52.86l9.6-6.3a1 1 0 0 0 0-1.68l-9.6-6.3A1 1 0 0 0 8 5.7Z"/></svg>
+            Start cleaning
+          </button>
+          <button id="stopButton" class="secondary" type="button">
+            <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M7.25 5.5h9.5a1.75 1.75 0 0 1 1.75 1.75v9.5a1.75 1.75 0 0 1-1.75 1.75h-9.5a1.75 1.75 0 0 1-1.75-1.75v-9.5A1.75 1.75 0 0 1 7.25 5.5Z"/></svg>
+            Stop
+          </button>
+        </div>
+      </section>
+
+      <section class="surface" aria-live="polite">
+        <div class="status-header">
+          <div>
+            <div class="eyebrow">Session monitor</div>
+            <h2>Run status</h2>
+          </div>
+          <span id="statusPill" class="status-pill">Idle</span>
+        </div>
+
+        <div class="progress-track" role="progressbar" aria-label="Session progress" aria-valuemin="0" aria-valuemax="50" aria-valuenow="0">
+          <span id="progressBar" class="progress-bar"></span>
+        </div>
+        <div class="progress-meta">
+          <span id="progressLabel">0 of 50 processed</span>
+          <span id="progressPercent">0%</span>
+        </div>
+
+        <div class="stats">
+          <div class="stat"><strong id="deletedCount">0</strong><span>Deleted</span></div>
+          <div class="stat"><strong id="processedCount">0</strong><span>Processed</span></div>
+          <div class="stat"><strong id="skippedCount">0</strong><span>Skipped</span></div>
+        </div>
+
+        <div id="lastError" class="error-note" role="alert" hidden></div>
+      </section>
+
+      <section class="surface">
+        <div class="log-heading">
+          <div>
+            <div class="eyebrow">Trace</div>
+            <h2>Activity log</h2>
+          </div>
+          <span id="logCount" class="log-count">0 entries</span>
+        </div>
+        <ul id="logList" class="log"></ul>
+      </section>
+    </main>
+
+    <script src="popup.js"></script>
+  </body>
+</html>
